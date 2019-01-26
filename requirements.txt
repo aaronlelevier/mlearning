@@ -1,0 +1,8 @@
+numpy
+matplotlib
+pytest
+isort
+pylint
+opencv-python
+yapf
+isort
