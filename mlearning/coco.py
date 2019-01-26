@@ -3,7 +3,7 @@ COCO dataset specific logic here
 """
 import json
 import os
-
+import numpy as np
 from mlearning import util
 
 
@@ -75,3 +75,23 @@ class Annotation:
             'width': ann['imageWidth'],
             'file_name': os.path.basename(ann['imagePath'])
         }
+
+    def get_annotation_bbox(self, labelme_bb):
+        np_bbs = np.array(labelme_bb)
+        bbs = np.reshape(np_bbs, (-1, 4))
+        return np.array(
+            [bbs[:,0], bbs[:,1], bbs[:,2]-bbs[:,0], bbs[:,3]-bbs[:,1]]
+        ).T.squeeze().tolist()
+
+    def label_to_category_id_map(self):
+        return {x['name']: x['id'] for x in self.get_categories()}
+
+    def get_segmentation(self, labelme_seg):
+        return np.expand_dims(
+            np.array(labelme_seg).reshape(-1), axis=0).tolist()
+
+    def get_annotations(self):
+        """
+        Returns the 'annotations' key of the COCO dataset annotation
+        """
+        pass
