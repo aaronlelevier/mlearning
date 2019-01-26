@@ -1,9 +1,10 @@
 """
 COCO dataset specific logic here
 """
-import json
 import os
+
 import numpy as np
+
 from mlearning import util
 
 
@@ -32,9 +33,12 @@ class Annotation:
         pass
 
     def list_annotations(self):
+        """
+        Returns a list of all labelme annotation files by their abspath's
+        """
         return [os.path.join(self.path, f)
-            for f in os.listdir(self.path)
-            if os.path.isfile(os.path.join(self.path, f))]
+                for f in os.listdir(self.path)
+                if os.path.isfile(os.path.join(self.path, f))]
 
     def get_categories(self):
         """
@@ -83,7 +87,7 @@ class Annotation:
             [bbs[:,0], bbs[:,1], bbs[:,2]-bbs[:,0], bbs[:,3]-bbs[:,1]]
         ).T.squeeze().tolist()
 
-    def label_to_category_id_map(self):
+    def get_label_to_category_id_map(self):
         return {x['name']: x['id'] for x in self.get_categories()}
 
     def get_segmentation(self, labelme_seg):
@@ -94,4 +98,31 @@ class Annotation:
         """
         Returns the 'annotations' key of the COCO dataset annotation
         """
-        pass
+        ann_id = 1
+        ret = []
+        label_to_category_id_map = self.get_label_to_category_id_map()
+
+        for f in self.list_annotations():
+            data = util.load_json(f)
+
+            for i, shape in enumerate(data['shapes']):
+                if i % 2 == 0:
+                    d = {
+                        'area': None,
+                        'bbox': self.get_annotation_bbox(shape['points']),
+                        'category_id': label_to_category_id_map[shape['label']],
+                        'id': ann_id,
+                        'image_id': self.get_image_id(f),
+                        'iscrowd': 0,
+                    }
+                else:
+                    # every 2nd loop the annotation is complete, so add it
+                    # to the return and increment the annotation id
+                    d['segmentation'] = self.get_segmentation(shape['points'])
+                    ret.append(d)
+                    ann_id += 1
+        return ret
+
+    def get_image_id(self, path):
+        filename, _ = os.path.splitext(os.path.basename(path))
+        return int(filename)

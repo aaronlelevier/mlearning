@@ -1,7 +1,4 @@
 import os
-import unittest
-
-import numpy as np
 
 from mlearning import coco
 from tests import config
@@ -66,13 +63,13 @@ class AnnotationTests(BaseTestCase):
 
         assert ret == raw_ret
 
-    def test_label_to_category_id_map(self):
+    def test_get_label_to_category_id_map(self):
         raw_ret = {
             'license': 1,
             'car': 2
         }
 
-        ret = self.ann.label_to_category_id_map()
+        ret = self.ann.get_label_to_category_id_map()
 
         assert ret == raw_ret
 
@@ -135,6 +132,25 @@ class AnnotationTests(BaseTestCase):
                 237,
                 184,
                 204]]
+        },{
+            'area': None,
+            'bbox': [124, 68, 423, 375],
+            'category_id': 2,
+            'id': 3,
+            'image_id': 2,
+            'iscrowd': 0,
+            'segmentation': [[
+                184, 155, 245, 68, 379, 76, 404, 91, 439, 145, 470, 147,
+                474, 163, 453, 174, 525, 275, 528, 315, 546, 350, 518, 409,
+                443, 441, 228, 437, 130, 392, 117, 335, 129, 281, 143, 224]]
+        },{
+            'area': None,
+            'bbox': [291, 386, 105, 44],
+            'category_id': 1,
+            'id': 4,
+            'image_id': 2,
+            'iscrowd': 0,
+            'segmentation': [[298, 386, 394, 391, 388, 428, 292, 427]]
         }]
 
         ret = self.ann.get_annotations()
