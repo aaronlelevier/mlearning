@@ -1,6 +1,7 @@
 """
 COCO dataset specific logic here
 """
+import json
 import os
 
 import numpy as np
@@ -21,7 +22,13 @@ class Annotation:
         """
         Return Lableme Annotations in the COCO Dataset 2014 format
         """
-        pass
+        return {
+            'info': {},
+            'images': self.get_images(),
+            'licenses': [],
+            'annotations': self.get_annotations(),
+            'categories': self.get_categories()
+        }
 
     def generate(self, output_path):
         """
@@ -30,7 +37,8 @@ class Annotation:
         Args:
             output_path (str): absolute path to write output
         """
-        pass
+        with open(output_path, 'w') as f:
+            f.write(json.dumps(self.all()))
 
     def list_annotations(self):
         """
