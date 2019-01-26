@@ -1,3 +1,15 @@
+# -*- coding: utf-8 -*-
+
+__title__ = 'mlearning'
+__version__ = '0.1.0'
+__author__ = 'Aaron Lelevier'
+__license__ = 'MIT'
+__copyright__ = 'Copyright 2019 Aaron Lelevier'
+
+# Version synonym
+VERSION = __version__
+
+
 import os
 import json
 import numpy as np
