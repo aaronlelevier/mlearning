@@ -1,6 +1,7 @@
 import os
 
 from mlearning import coco, util
+
 from tests import config
 from tests.base import BaseTestCase
 
@@ -196,3 +197,21 @@ class AnnotationTests(BaseTestCase):
         ret = self.ann.get_annotations()
 
         assert ret == raw_ret
+
+    def test_get_imageid_to_imageann(self):
+        ret = self.ann.get_imageid_to_imageann()
+
+        assert isinstance(ret, dict)
+        assert ret == {
+            1: TEST_IMAGES[0],
+            2: TEST_IMAGES[1]
+        }
+
+    def test_get_imageid_to_anns(self):
+        ret = self.ann.get_imageid_to_anns()
+
+        assert isinstance(ret, dict)
+        assert ret == {
+            1: TEST_ANNOTATIONS[:2],
+            2: TEST_ANNOTATIONS[2:]
+        }

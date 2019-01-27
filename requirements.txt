@@ -5,3 +5,5 @@ isort
 pylint
 opencv-python
 yapf
+jupyter
+notebook

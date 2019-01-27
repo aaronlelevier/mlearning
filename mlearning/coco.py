@@ -5,7 +5,6 @@ import json
 import os
 
 import numpy as np
-
 from mlearning import util
 
 
@@ -134,3 +133,20 @@ class Annotation:
     def get_image_id(self, path):
         filename, _ = os.path.splitext(os.path.basename(path))
         return int(filename)
+
+    def get_imageid_to_imageann(self):
+        return {x['id']: x for x in self.get_images()}
+
+    def get_imageid_to_anns(self):
+        """
+        Returns a dict where the key is an imageid and the value
+        is a list of annotations for that image
+        """
+        imageid_to_anns = {}
+        for img in self.get_images():
+            imageid_to_anns[img['id']] = []
+
+        for a in self.get_annotations():
+            imageid_to_anns[a['image_id']].append(a)
+
+        return imageid_to_anns

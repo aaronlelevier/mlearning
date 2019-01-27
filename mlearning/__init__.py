@@ -15,6 +15,7 @@ import json
 import numpy as np
 from matplotlib import patches, patheffects
 from matplotlib import pyplot as plt
+from .util import open_image
 
 
 def load_json(path):
@@ -43,17 +44,6 @@ def show_img(im, figsize=None, ax=None):
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
     return ax
-
-
-def open_image(image_path):
-    """
-    Returns an image as a rgb np.ndarray
-    """
-    bgr_img = cv2.imread(image_path)
-    # get b,g,r
-    b,g,r = cv2.split(bgr_img)
-    # switch it to rgb
-    return cv2.merge([r,g,b])/255.
 
 
 def get_imageid_to_anns(ann_path):
