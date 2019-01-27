@@ -69,11 +69,11 @@ def plot_bboxes_and_masks(image_id=None):
     color = []
     anns = IMAGEID_TO_ANN[image_id]
     for ann in anns:
-        c = (np.random.random((1, 3))*0.6+0.4).tolist()[0]
         # polygon
         for seg in ann['segmentation']:
             poly = np.array(seg).reshape((int(len(seg)/2), 2))
             polygons.append(Polygon(poly))
+            c = (np.random.random((1, 3))*0.6+0.4).tolist()[0]
             color.append(c)
 
     p = PatchCollection(polygons, facecolor=color, linewidths=0, alpha=0.4)
