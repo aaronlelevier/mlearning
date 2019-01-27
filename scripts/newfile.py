@@ -8,6 +8,14 @@ Example:
     Two files generated are:
         - mlearning/utils.py
         - tests/test_utils.py
+
+Explanation:
+
+    This code assumes that the project top level code directory is: mlearning/
+
+    It assumes that all tests start in a top level directory called: tests/
+
+The code doesn't support recursively creating nested directories yet...
 """
 import argparse
 import os
