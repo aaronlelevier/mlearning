@@ -90,14 +90,17 @@ TEST_ANNOTATIONS = [{
 class AnnotationTests(BaseTestCase):
 
     def setUp(self):
-        path = config.ANNOTATIONS_DIR
-
-        self.ann = coco.Annotation(path)
+        self.ann = coco.Annotation(
+            path=os.path.join(config.PROJECT_DIR, 'tests/data'))
 
     def test_init(self):
-        assert os.path.isdir(self.ann.path)
-        assert self.ann.path == \
+        assert os.path.isdir(self.ann.ann_path)
+        assert self.ann.ann_path == \
             os.path.join(config.PROJECT_DIR, 'tests/data/annotations')
+        assert self.ann.image_path == \
+            os.path.join(config.PROJECT_DIR, 'tests/data/images')
+        assert self.ann.output_path == \
+            os.path.join(config.PROJECT_DIR, 'tests/data/output')
 
     def test_all(self):
         ret = self.ann.all()
@@ -207,11 +210,24 @@ class AnnotationTests(BaseTestCase):
             2: TEST_IMAGES[1]
         }
 
-    def test_get_imageid_to_anns(self):
-        ret = self.ann.get_imageid_to_anns()
+    def test_get_imageid_to_ann(self):
+        ret = self.ann.get_imageid_to_ann()
 
         assert isinstance(ret, dict)
         assert ret == {
             1: TEST_ANNOTATIONS[:2],
             2: TEST_ANNOTATIONS[2:]
+        }
+
+    def test_get_image_ids(self):
+        ret = self.ann.get_image_ids()
+
+        assert ret == [1, 2]
+
+    def test_get_category_id_to_name(self):
+        ret = self.ann.get_category_id_to_name()
+
+        assert ret == {
+            1: 'license',
+            2: 'car'
         }
