@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 
@@ -34,3 +35,21 @@ class LabeledData:
                 idx += 1
 
         return ret, unseq_imgs
+
+    @classmethod
+    def bboxes_and_masks_all(cls, filepath):
+        path = Path(filepath)
+        for f in path.glob('**/*.json'):
+            cls.bboxes_and_masks_correctly_ordered(f)
+
+    @classmethod
+    def bboxes_and_masks_correctly_ordered(cls, filepath):
+        with open(filepath) as f:
+            data = json.loads(f.read())
+
+        assert data['shapes'][0]['label'] == 'car' and data['shapes'][0]['shape_type'] == 'rectangle'
+        assert data['shapes'][1]['label'] == 'car' and data['shapes'][1]['shape_type'] == 'polygon'
+        assert data['shapes'][2]['label'] == 'license' and data['shapes'][2]['shape_type'] == 'rectangle'
+        assert data['shapes'][3]['label'] == 'license' and data['shapes'][3]['shape_type'] == 'polygon'
+
+        return True
